@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario de Vacaciones</title>
+    <!-- FullCalendar CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Calendario SD</h1>
+    <div class="container">
+        <!-- Sección de nombres y colores (se generará con JavaScript) -->
+        <div id="month-names"></div>
+        <!-- Calendario -->
+        <div id="calendar"></div>
+        <!-- Lista de días seleccionados -->
+        <div id="selected-days">
+            <h2>Días Seleccionados</h2>
+            <span id="selected-days-list"></span>
+        </div>
+    </div>
+
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+    <script src="calendario.js"></script>
+</body>
+</html>
