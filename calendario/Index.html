@@ -8,17 +8,54 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  
+    <div id="principal">
+    <div class="menu-bar">
+        <a id="index" href="./Index.html">Registro</a>
+        <a  id="consulta" href="./consulta.php">Consulta</a>
+        <a id="ventanas" href="./Ventanas.php">Ventanas</a>
+    </div>
+
+    <!-- Contenido de la Página -->
+    
     <h1>Calendario SD</h1>
+    <div id="selected-days">
+        <h2>Colaboradores</h2>
+        <select id="colab">
+            <option value="" selected disabled>Seleccionar</option>
+    <option value="1">Marco</option>
+    <option value="2">Hassan</option>
+    <option value="3">Huato</option>
+    <option value="4">Ale</option>
+    <option value="5">Saul</option>
+    <option value="6">Mike</option>
+    <option value="7">Marcos</option>
+    <option value="8">Rios</option>
+    <option value="9">Justino</option>
+    <option value="10">Ramos</option>
+    <option value="11">Jose</option>
+    <option value="12">Rogo</option>
+        </select>
+
+        <select id="tipo-ausencia">
+        <option value="" selected disabled>Seleccionar tipo</option>
+        <option value="vacaciones">Vacaciones</option>
+        <option value="guardias">Guardias</option>
+    </select>
+    </div>
     <div class="container">
         <!-- Sección de nombres y colores (se generará con JavaScript) -->
         <div id="month-names"></div>
         <!-- Calendario -->
         <div id="calendar"></div>
         <!-- Lista de días seleccionados -->
+        <form id="vacacionesForm">
         <div id="selected-days">
             <h2>Días Seleccionados</h2>
             <span id="selected-days-list"></span>
         </div>
+        <button type="submit">Registrar Vacaciones</button>
+        </form>
     </div>
 
     <!-- FullCalendar JS -->

@@ -1,19 +1,26 @@
+var selectedDays = []; // Array para almacenar los días seleccionados
+const monthColors = [
+    "#FF6F61", "#6B5B95", "#88B04B", "#F7CAC9", "#92A8D1", "#955251",
+    "#B565A7", "#009B77", "#DD4124", "#D65076", "#45B8AC", "#EFC050"
+];
+var calendar
 document.addEventListener('DOMContentLoaded', function() {
     const calendarEl = document.getElementById('calendar');
     const monthNamesContainer = document.getElementById('month-names');
     const selectedDaysList = document.getElementById('selected-days-list');
-    let selectedDays = []; // Array para almacenar los días seleccionados
-
-    // Días festivos en México (ejemplo para 2023)
-    const holidays = [
-        '2025-01-01', // Año Nuevo
-        '2023-02-06', // Día de la Constitución
-        '2023-03-21', // Natalicio de Benito Juárez
-        '2023-05-01', // Día del Trabajo
-        '2023-09-16', // Día de la Independencia
-        '2023-11-20', // Día de la Revolución
-        '2023-12-25', // Navidad
-    ];
+   
+     // Días festivos en México (ejemplo para 2023)
+     const holidays = [
+        { title: 'Año Nuevo', date: '2025-01-01', color: 'red', tipo: 'festivo' },
+        { title: 'Día de la Constitución', date: '2025-02-03', color: 'blue', tipo: 'festivo' },
+        { title: 'Natalicio de Benito Juárez', date: '2025-03-17', color: 'green', tipo: 'festivo' },
+        { title: 'Jueves Santo', date: '2025-04-17', color: 'purple', tipo: 'festivo' },
+        { title: 'Viernes Santo', date: '2025-04-18', color: 'purple', tipo: 'festivo' },
+        { title: 'Día del Trabajo', date: '2025-05-01', color: 'orange', tipo: 'festivo' },
+        { title: 'Día de la Independencia', date: '2025-09-16', color: 'red', tipo: 'festivo' },
+        { title: 'Día de la Revolución', date: '2025-11-17', color: 'blue', tipo: 'festivo' },
+        { title: 'Navidad', date: '2025-12-25', color: 'green', tipo: 'festivo' },
+      ];
 
     // Nombres de los meses
     const months = [
@@ -28,15 +35,13 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
     
     // Colores para cada mes
-    const monthColors = [
-        "#FF6F61", "#6B5B95", "#88B04B", "#F7CAC9", "#92A8D1", "#955251",
-        "#B565A7", "#009B77", "#DD4124", "#D65076", "#45B8AC", "#EFC050"
-    ];
-
+ 
+    
     // Inicializar FullCalendar
-    const calendar = new FullCalendar.Calendar(calendarEl, {
+        calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'multiMonthYear', // Vista anual con todos los meses
         locale: 'es', // Idioma: español
+        events: holidays,
         selectable: true, // Permite seleccionar días
         selectMirror: true,
         weekends: true, // Muestra los fines de semana
@@ -84,9 +89,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Renderizar el calendario
     calendar.render();
-
+    
     // Función para agregar o eliminar un día seleccionado
     function toggleDaySelection(dateStr) {
+        let color = document.getElementById('colab').value;
         if (!selectedDays.includes(dateStr)) {
             // Agregar el día seleccionado
             selectedDays.push(dateStr);
@@ -95,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: 'Vacaciones',
                 start: dateStr,
                 allDay: true,
-                color: '#4CAF50', // Color para días seleccionados
+                color: monthColors[color], // Color para días seleccionados
             });
         } else {
             // Eliminar el día seleccionado
@@ -124,37 +130,93 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Generar la sección de nombres y colores
-    months.forEach((month, index) => {
-        // Crear el contenedor para el mes y los días
-        const container = document.createElement('div');
-        container.classList.add('month-days-container');
-        container.style.display = 'flex'; // Usar flexbox para alinear los elementos
+    
+});
 
-        // Crear el elemento del mes
-        const monthBox = document.createElement('div');
-        monthBox.classList.add('month-box');
-        monthBox.textContent = month;
-        monthBox.setAttribute('data-month', index);
-        monthBox.style.backgroundColor = monthColors[index];
-        monthBox.style.width = "70px";
-        monthBox.style.height = "30px";
-        monthBox.style.marginRight = "12px"; // Separación de 12px entre el mes y los días
+document.getElementById("vacacionesForm").addEventListener("submit", function (event) {
+    event.preventDefault(); // Evitar que el formulario se envíe de forma tradicional
 
-        // Crear el elemento de los dias
-        const daysBox = document.createElement('div');
-        daysBox.classList.add('days-box');
-        daysBox.textContent = days[index]; // Usar el índice para obtener los días correspondientes
-        daysBox.setAttribute('data-month', index);
-        daysBox.style.backgroundColor = monthColors[index];
-        daysBox.style.width = "70px";
-        daysBox.style.height = "30px";
+    // Obtener los datos del formulario
+    const select_field = document.getElementById('colab');
+    const colaborador_id = select_field.value;
+    const dias_vacaciones = JSON.stringify(selectedDays);
+    const dias = selectedDays.length;
 
-        // Agregar el mes y los días al contenedor
-        container.appendChild(monthBox);
-        container.appendChild(daysBox);
+    // Valor definido para la verificación
+    const valorDefinido = "Taquito123"; // Cambia esto por el valor que desees
 
-        // Agregar el contenedor al calendario
-        calendarEl.appendChild(container);
+    // Crear el alert personalizado
+    const alertMessage = "Ingrese la clave de confirmación:";
+    const userInput = prompt(alertMessage); // Mostrar un prompt con un campo de texto
+
+    // Verificar si el usuario ingresó un valor
+    if (userInput === null) {
+        alert("Operación cancelada."); // El usuario hizo clic en "Cancelar"
+        return;
+    }
+
+    // Verificar si el valor ingresado es igual al valor definido
+    if (userInput === valorDefinido) {
+        // Validar que el campo de días de vacaciones sea un JSON válido
+        try {
+            JSON.parse(dias_vacaciones);
+        } catch (error) {
+            alert("El campo 'Días de Vacaciones' debe ser un JSON válido.");
+            return;
+        }
+
+        // Enviar los datos al servidor usando fetch
+        fetch("http://localhost/calendario/Conexion_bd.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                colaborador_id: colaborador_id,
+                dias_vacaciones: dias_vacaciones,
+                dias_total: dias
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Vacaciones registradas correctamente.");
+            } else {
+                alert("Error: " + data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Exito:", error);
+            alert("Vacaciones registradas correctamente.");
+        });
+    } else {
+        // Mostrar alert de error si el valor no coincide
+        alert("Error: Clave de confirmación incorrecta.");
+    }
+});
+
+document.getElementById("colab").addEventListener("change", function () {
+    // Borrar los valores del arreglo selectedDays
+    selectedDays = [];
+    const selectedDaysList = document.getElementById("selected-days-list");
+    if(selectedDaysList!=undefined){
+    // Seleccionar todos los elementos <li> dentro del contenedor
+    const listItems = selectedDaysList.querySelectorAll("li");
+
+    // Recorrer y eliminar cada <li>
+    listItems.forEach(li => {
+        li.remove();
     });
+
+    // Mensaje de confirmación
+    console.log("Todos los elementos <li> han sido borrados.");
+    }
+    calendar.getEvents().forEach(event => {
+        if (event.extendedProps.tipo !== 'festivo') { // Solo elimina si no es un día festivo
+          event.remove();
+        }
+      });
+    
+    // Mensaje de confirmación
+    console.log("El arreglo selectedDays ha sido borrado.");
 });
